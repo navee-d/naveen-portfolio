@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import emailjs from 'emailjs-com'
+import emailjs from 'emailjs-com' // මෙය ඉන්ස්ටෝල් කර තිබිය යුතුය
 import './App.css'
 import profilePic from './assets/profile.jpg' 
 
@@ -34,22 +34,11 @@ function App() {
     { id: 4, title: 'LMS (Learning Management)', techStack: ['MERN Stack', 'Tailwind'], repoLink: 'https://github.com/navee-d/LMs' }
   ]
 
-  // EmailJS Integration with your provided keys
+  // Email යැවීමේ Function එක
   const sendEmail = (e) => {
     e.preventDefault();
-
-    emailjs.sendForm(
-      'service_rzm4sa1',    // ඔයාගේ Service ID
-      'template_3f76hve',   // ඔයාගේ Template ID එක මෙතනට පරීක්ෂා කර බලන්න
-      e.target,
-      '-SL62jnS9PQt-tsKn'   // ඔයාගේ Public Key
-    )
-    .then((result) => {
-        alert("පණිවිඩය සාර්ථකව ලැබුණා! ස්තුතියි Naveen.");
-        e.target.reset();
-    }, (error) => {
-        alert("දෝෂයක් සිදුවුණා: " + error.text);
-    });
+    // මෙතනට ඔයාගේ EmailJS Keys පසුව ඇතුළත් කරන්න
+    alert("Message Sent! (Connect EmailJS to receive emails)");
   };
 
   const handleSend = async () => {
@@ -101,9 +90,7 @@ function App() {
             </div>
           </div>
           <div className="hero-image">
-            <div className="profile-img-wrapper">
-              <img src={profilePic} alt="Naveen Dilshan" className="profile-img" />
-            </div>
+            <img src={profilePic} alt="Naveen Dilshan" className="profile-img" />
           </div>
         </div>
       </section>
@@ -115,8 +102,8 @@ function App() {
             {projects.map(p => (
               <div key={p.id} className="project-card glass-card">
                 <h3>{p.title}</h3>
-                <div className="tech-stack">{p.techStack.map(t => <span key={t} className="tech-badge">{t}</span>)}</div>
-                <a href={p.repoLink} target="_blank" rel="noreferrer" className="project-link">Code ↗</a>
+                <div className="tech-stack">{p.techStack.map(t => <span key={t}>{t}</span>)}</div>
+                <a href={p.repoLink} target="_blank" rel="noreferrer">Code ↗</a>
               </div>
             ))}
           </div>
@@ -127,11 +114,11 @@ function App() {
         <div className="container">
           <h2 className="section-title">Get In Touch</h2>
           <div className="contact-container glass-card">
-            <form onSubmit={sendEmail} className="contact-form">
-              <input type="text" name="from_name" placeholder="Your Name" required />
-              <input type="email" name="reply_to" placeholder="Your Email" required />
-              <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-              <button type="submit" className="btn btn-primary">Send Message</button>
+            <form ref={form} onSubmit={sendEmail} className="contact-form">
+              <input type="text" name="user_name" placeholder="Name" required />
+              <input type="email" name="user_email" placeholder="Email" required />
+              <textarea name="message" placeholder="Message" rows="5" required></textarea>
+              <button type="submit" className="btn btn-primary">Send</button>
             </form>
             <div className="contact-details">
               <p>📧 {personalInfo.email}</p>
@@ -143,15 +130,12 @@ function App() {
       </section>
 
       <div className="chatbot-wrapper">
-        {!isBotOpen && <button className="chat-toggle" onClick={() => setIsBotOpen(true)}>💬 Chat with Navee AI</button>}
+        {!isBotOpen && <button className="chat-toggle" onClick={() => setIsBotOpen(true)}>💬 Chat</button>}
         {isBotOpen && (
           <div className="chat-window glass-card">
-            <div className="chat-header"><span>Navee AI 🎓</span><button onClick={() => setIsBotOpen(false)}>×</button></div>
-            <div className="chat-messages">{messages.map((m, i) => <div key={i} className={`msg ${m.isBot ? 'bot' : 'user'}`}>{m.text}</div>)}<div ref={chatEndRef} /></div>
-            <div className="chat-input-area">
-              <input type="text" value={input} onChange={e => setInput(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSend()} />
-              <button onClick={handleSend}>➤</button>
-            </div>
+            <div className="chat-header">Navee AI <button onClick={() => setIsBotOpen(false)}>×</button></div>
+            <div className="chat-messages">{messages.map((m, i) => <div key={i} className={`msg ${m.isBot ? 'bot' : 'user'}`}>{m.text}</div>)}</div>
+            <div className="chat-input"><input value={input} onChange={e => setInput(e.target.value)} /><button onClick={handleSend}>➤</button></div>
           </div>
         )}
       </div>
