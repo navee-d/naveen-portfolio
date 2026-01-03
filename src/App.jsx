@@ -34,13 +34,13 @@ function App() {
     { id: 4, title: 'LMS (Learning Management)', techStack: ['MERN Stack', 'Tailwind'], repoLink: 'https://github.com/navee-d/LMs' }
   ]
 
-  // EmailJS Integration with your Keys
+  // EmailJS Integration with your provided keys
   const sendEmail = (e) => {
     e.preventDefault();
 
     emailjs.sendForm(
       'service_rzm4sa1',    // ඔයාගේ Service ID
-      'YOUR_TEMPLATE_ID',   // මෙතනට EmailJS එකේ ඇති Template ID එක දාන්න
+      'template_3f76hve',   // ඔයාගේ Template ID එක මෙතනට පරීක්ෂා කර බලන්න
       e.target,
       '-SL62jnS9PQt-tsKn'   // ඔයාගේ Public Key
     )
@@ -101,7 +101,9 @@ function App() {
             </div>
           </div>
           <div className="hero-image">
-            <img src={profilePic} alt="Naveen Dilshan" className="profile-img" />
+            <div className="profile-img-wrapper">
+              <img src={profilePic} alt="Naveen Dilshan" className="profile-img" />
+            </div>
           </div>
         </div>
       </section>
@@ -113,8 +115,8 @@ function App() {
             {projects.map(p => (
               <div key={p.id} className="project-card glass-card">
                 <h3>{p.title}</h3>
-                <div className="tech-stack">{p.techStack.map(t => <span key={t}>{t}</span>)}</div>
-                <a href={p.repoLink} target="_blank" rel="noreferrer">Code ↗</a>
+                <div className="tech-stack">{p.techStack.map(t => <span key={t} className="tech-badge">{t}</span>)}</div>
+                <a href={p.repoLink} target="_blank" rel="noreferrer" className="project-link">Code ↗</a>
               </div>
             ))}
           </div>
@@ -141,12 +143,15 @@ function App() {
       </section>
 
       <div className="chatbot-wrapper">
-        {!isBotOpen && <button className="chat-toggle" onClick={() => setIsBotOpen(true)}>💬 Chat</button>}
+        {!isBotOpen && <button className="chat-toggle" onClick={() => setIsBotOpen(true)}>💬 Chat with Navee AI</button>}
         {isBotOpen && (
           <div className="chat-window glass-card">
-            <div className="chat-header">Navee AI <button onClick={() => setIsBotOpen(false)}>×</button></div>
-            <div className="chat-messages">{messages.map((m, i) => <div key={i} className={`msg ${m.isBot ? 'bot' : 'user'}`}>{m.text}</div>)}</div>
-            <div className="chat-input"><input value={input} onChange={e => setInput(e.target.value)} /><button onClick={handleSend}>➤</button></div>
+            <div className="chat-header"><span>Navee AI 🎓</span><button onClick={() => setIsBotOpen(false)}>×</button></div>
+            <div className="chat-messages">{messages.map((m, i) => <div key={i} className={`msg ${m.isBot ? 'bot' : 'user'}`}>{m.text}</div>)}<div ref={chatEndRef} /></div>
+            <div className="chat-input-area">
+              <input type="text" value={input} onChange={e => setInput(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSend()} />
+              <button onClick={handleSend}>➤</button>
+            </div>
           </div>
         )}
       </div>
