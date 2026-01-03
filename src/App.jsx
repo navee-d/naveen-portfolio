@@ -166,8 +166,7 @@ function App() {
           <h2 className="section-title">About Me</h2>
           <div className="about-content glass-card compact-card">
             <p className="about-paragraph">
-              I am a Full Stack Developer and a 2nd-year HNDIT student at SLIATE ATI Nawalapitiya. 
-              I specialize in building clean, scalable applications using React, Node.js, and Spring Boot.
+              I am a Full Stack Developer and a 2nd-year HNDIT student at SLIATE ATI Nawalapitiya. I specialize in building clean, scalable applications using React, Node.js, and Spring Boot.
             </p>
             
             {/* Personal Details with LINKS */}

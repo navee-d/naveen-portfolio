@@ -264,28 +264,31 @@ ul { list-style: none; }
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2.5rem;
-  margin-bottom: 2.5rem;
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.03);
+  gap: 3rem;
+  margin-bottom: 3rem;
+  padding: 2.5rem;
+  background: rgba(0, 242, 255, 0.05);
   border-radius: 15px;
+  border: 1px solid rgba(0, 242, 255, 0.1);
 }
 
 .info-item { display: flex; flex-direction: column; align-items: center; min-width: 140px; }
-.info-label { font-size: 0.85rem; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
-.info-value { font-size: 1.1rem; color: white; font-weight: 600; }
-.info-link { color: var(--primary-cyan); font-weight: 600; transition: color 0.2s; }
-.info-link:hover { color: white; text-decoration: underline; }
+.info-label { font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 0.5rem; font-weight: 600; }
+.info-value { font-size: 1.15rem; color: white; font-weight: 700; }
+.info-link { color: var(--primary-cyan); font-weight: 700; transition: all 0.3s ease; text-decoration: none; }
+.info-link:hover { color: white; text-decoration: underline; text-shadow: 0 0 10px rgba(0, 242, 255, 0.5); }
 
 .about-stats {
   display: flex;
   justify-content: center;
   gap: 4rem;
-  margin-top: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0, 242, 255, 0.1);
 }
 .stat-item { text-align: center; }
-.stat-number { font-size: 2.2rem; font-weight: 800; color: var(--primary-cyan); }
-.stat-label { font-size: 0.9rem; color: var(--text-secondary); }
+.stat-number { font-size: 2.5rem; font-weight: 900; background: linear-gradient(135deg, #00f2ff, #0066ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.stat-label { font-size: 0.95rem; color: #999; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 0.5rem; }
 
 /* =========================================
    5. SKILLS & PROJECTS (GLASS CARDS)
