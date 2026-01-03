@@ -23,7 +23,7 @@ function App() {
   const personalInfo = {
     name: "M.G. Naveen Dilshana",
     age: "21 Years",
-    address: "Nawalapitiya, Sri Lanka",
+    address: "No 2, Hunugaloya, Kataboolwa, Nawalapitiya",
     email: "dilshannaveen124@gmail.com",
     phone: "072 812 1216"
   }
@@ -150,7 +150,6 @@ function App() {
               </div>
             </div>
             
-            {/* Profile Image MOVED HERE for Better Look */}
             <div className="hero-image-container">
               <div className="profile-img-wrapper">
                 <img src={profilePic} alt="Profile" className="profile-img" />
@@ -160,47 +159,59 @@ function App() {
         </div>
       </section>
 
-      {/* About Section (Compact & Clean) */}
+      {/* About Section (New Bento Grid Design) */}
       <section id="about" className="about-section">
         <div className="container">
           <h2 className="section-title">About Me</h2>
-          <div className="about-content glass-card compact-card">
-            <p className="about-paragraph">
-              I am a Full Stack Developer and a 2nd-year HNDIT student at SLIATE ATI Nawalapitiya. I specialize in building clean, scalable applications using React, Node.js, and Spring Boot.
-            </p>
-            
-            {/* Personal Details with LINKS */}
-            <div className="personal-info-grid">
-              <div className="info-item">
-                <span className="info-label">Age</span>
-                <span className="info-value">{personalInfo.age}</span>
-              </div>
-              <div className="info-item">
-                <span className="info-label">Address</span>
-                <span className="info-value">{personalInfo.address}</span>
-              </div>
-              <div className="info-item">
-                <span className="info-label">Email</span>
-                <a href={`mailto:${personalInfo.email}`} className="info-link">{personalInfo.email}</a>
-              </div>
-              <div className="info-item">
-                <span className="info-label">Phone</span>
-                <a href={`tel:${personalInfo.phone.replace(/\s/g, '')}`} className="info-link">{personalInfo.phone}</a>
+          
+          <div className="bento-grid">
+            {/* Box 1: Bio */}
+            <div className="bento-box bio-box glass-card">
+              <h3 className="bento-title">Who am I? 💻</h3>
+              <p className="about-paragraph">
+                I'm <strong>M.G. Naveen Dilshana</strong>, a passionate Full Stack Developer and HNDIT student at 
+                <span className="highlight-text"> SLIATE ATI Nawalapitiya</span>.
+              </p>
+              <p className="about-paragraph" style={{marginTop: '1rem'}}>
+                I specialize in building clean, scalable applications using React, Node.js, and Spring Boot. 
+                My goal is to simplify complex problems with elegant code solutions.
+              </p>
+            </div>
+
+            {/* Box 2: Education */}
+            <div className="bento-box edu-box glass-card">
+              <h3 className="bento-title">🎓 Education</h3>
+              <div className="edu-content">
+                <span className="edu-year">2024 - Present</span>
+                <h4 className="edu-degree">HND in Information Technology</h4>
+                <p className="edu-place">SLIATE ATI, Nawalapitiya</p>
               </div>
             </div>
 
-            <div className="about-stats">
+            {/* Box 3: Personal Info */}
+            <div className="bento-box info-box glass-card">
+              <h3 className="bento-title">🚀 Personal Info</h3>
+              <ul className="info-list">
+                <li><span className="label">Age:</span> {personalInfo.age}</li>
+                <li><span className="label">City:</span> Nawalapitiya</li>
+                <li><span className="label">Phone:</span> {personalInfo.phone}</li>
+                <li><a href={`mailto:${personalInfo.email}`} className="email-link">Send Email ↗</a></li>
+              </ul>
+            </div>
+
+            {/* Box 4: Stats */}
+            <div className="bento-box stats-box glass-card">
               <div className="stat-item">
-                <div className="stat-number">2+</div>
-                <div className="stat-label">Years Exp.</div>
+                <span className="stat-num">02+</span>
+                <span className="stat-lbl">Years Exp.</span>
               </div>
               <div className="stat-item">
-                <div className="stat-number">15+</div>
-                <div className="stat-label">Repos</div>
+                <span className="stat-num">15+</span>
+                <span className="stat-lbl">Repositories</span>
               </div>
               <div className="stat-item">
-                <div className="stat-number">10+</div>
-                <div className="stat-label">Projects</div>
+                <span className="stat-num">10+</span>
+                <span className="stat-lbl">Projects</span>
               </div>
             </div>
           </div>
@@ -269,7 +280,6 @@ function App() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="footer">
         <div className="container">
           <div className="footer-content">
