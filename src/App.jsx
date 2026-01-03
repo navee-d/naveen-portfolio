@@ -57,10 +57,10 @@ function App() {
   ]
 
   const projects = [
-    { id: 1, title: 'Vehicle Inventory System (VIMS)', desc: 'A complete system to manage inventories for Hexalyte Technology.', tech: ['Node.js', 'Express', 'MongoDB', 'React'], link: 'https://github.com/Hexalyte-technology/hexalyte-vims' },
-    { id: 2, title: 'Service Finder Platform', desc: 'Connecting service providers with customers in real-time.', tech: ['Spring Boot', 'Java', 'MySQL', 'React'], link: 'https://github.com/hexalyte-technology-pvt-ltd/hexalyte-service-finder' },
-    { id: 3, title: 'ATI Nawalapitiya Web', desc: 'Official website development for SLIATE ATI Nawalapitiya.', tech: ['PHP', 'HTML/CSS', 'JavaScript'], link: 'https://github.com/navee-d/atinawalapitiyaweb' },
-    { id: 4, title: 'LMS (Learning Management)', desc: 'Custom LMS for student course tracking and material distribution.', tech: ['MERN Stack', 'Tailwind CSS'], link: 'https://github.com/navee-d/LMs' }
+    { id: 1, title: 'Vehicle Inventory System (VIMS)', desc: 'A complete system to manage inventories for Hexalyte Technology.', tech: ['Node.js', 'Express', 'MongoDB', 'React'] },
+    { id: 2, title: 'Service Finder Platform', desc: 'Connecting service providers with customers in real-time.', tech: ['Spring Boot', 'Java', 'MySQL', 'React'] },
+    { id: 3, title: 'ATI Nawalapitiya Web', desc: 'Official website development for SLIATE ATI Nawalapitiya.', tech: ['PHP', 'HTML/CSS', 'JavaScript'] },
+    { id: 4, title: 'LMS (Learning Management)', desc: 'Custom LMS for student course tracking and material distribution.', tech: ['MERN Stack', 'Tailwind CSS'] }
   ]
 
   // ===== FIXED EMAIL FUNCTION =====
@@ -255,7 +255,9 @@ function App() {
                 <h3>{p.title}</h3>
                 <p style={{color: 'var(--text-secondary)', fontSize: '0.9rem'}}>{p.desc}</p>
                 <div className="tech-tags">{p.tech.map(t => <span key={t}>{t}</span>)}</div>
-                <a href={p.link} className="btn btn-outline">View Code</a>
+                
+                {/* BUTTON REMOVED HERE AS REQUESTED */}
+                
               </motion.div>
             ))}
           </motion.div>
