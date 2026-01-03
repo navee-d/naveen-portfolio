@@ -1,19 +1,35 @@
 import { useState, useEffect, useRef } from 'react'
 import emailjs from 'emailjs-com'
+import { motion } from 'framer-motion' 
 import './App.css'
-// Make sure this path is correct based on your folder structure
+// Note: Ensure this path is correct for your project structure
 import profilePic from './assets/profile.jpg' 
+
+// Animation Variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 60 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+}
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+}
 
 function App() {
   const [isBotOpen, setIsBotOpen] = useState(false)
   const [messages, setMessages] = useState([
-    { text: "ආයුබෝවන්! මම Navee AI Helper. ඔයාට උදව් ඕනද?", isBot: true }
+    { text: "Hello! I'm Navee AI Helper. How can I help you?", isBot: true }
   ])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const chatEndRef = useRef(null)
 
-  // SECURITY NOTE: In a real production app, hide these keys in an .env file!
   const AGENT_URL = "https://wigdnksubw3ngtuhjbzpc7yq.agents.do-ai.run";
   const AGENT_KEY = "l7kt4QprYUzucEc7ehpcvACDVHtfR5eZ";
 
@@ -22,7 +38,7 @@ function App() {
   }, [messages, isLoading])
 
   const personalInfo = {
-    name: "M.G. Naveen Dilshana",
+    name: "M.G. Naveen Dilshan",
     age: "21 Years",
     city: "Nawalapitiya",
     phone: "072 812 1216",
@@ -47,28 +63,37 @@ function App() {
     { id: 4, title: 'LMS (Learning Management)', desc: 'Custom LMS for student course tracking and material distribution.', tech: ['MERN Stack', 'Tailwind CSS'], link: 'https://github.com/navee-d/LMs' }
   ]
 
+  // ===== FIXED EMAIL FUNCTION =====
   const sendEmail = (e) => {
     e.preventDefault();
+    
+    // 1. Get the Sender's Name from the form input
+    const senderName = e.target.from_name.value;
+
     emailjs.sendForm(
-      'service_rzm4sa1',    
-      'template_3f76hve',   
+      'service_qzdj9h6',      
+      'template_dzxe7i9',     
       e.target,
-      '-SL62jnS9PQt-tsKn'   
+      'Z8EWbyIIbI1e9gu-P'     
     )
     .then((result) => {
-        console.log(result.text);
-        alert("පණිවිඩය සාර්ථකව ලැබුණා! ස්තුතියි Naveen.");
+        console.log("Email success:", result.text);
+        
+        // 2. Use the SENDER'S name in the thank you message
+        alert(`Message sent successfully! Thank you, ${senderName}.`);
+        
         e.target.reset();
     }, (error) => {
-        console.log(error.text);
-        alert("දෝෂයක් සිදුවුණා, පසුව උත්සාහ කරන්න.");
+        console.error("Email error:", error.text);
+        
+        // 3. Error message in English
+        alert("An error occurred: " + error.text);
     });
   };
 
   const handleSend = async () => {
     if (!input.trim()) return;
-    const userMessage = { text: input, isBot: false };
-    setMessages(prev => [...prev, userMessage]);
+    setMessages(prev => [...prev, { text: input, isBot: false }]);
     const currentInput = input;
     setInput("");
     setIsLoading(true);
@@ -80,7 +105,7 @@ function App() {
         body: JSON.stringify({ messages: [{ role: "user", content: currentInput }] })
       });
       const data = await response.json();
-      setMessages(prev => [...prev, { text: data.choices?.[0]?.message?.content || "සමාවෙන්න...", isBot: true }]);
+      setMessages(prev => [...prev, { text: data.choices?.[0]?.message?.content || "Sorry, I encountered an error.", isBot: true }]);
     } catch (error) {
       setMessages(prev => [...prev, { text: "AI Error.", isBot: true }]);
     } finally {
@@ -90,7 +115,6 @@ function App() {
 
   return (
     <div className="app">
-      {/* Navbar */}
       <nav className="navbar">
         <div className="nav-container">
           <div className="nav-logo">M.G. Naveen</div>
@@ -106,53 +130,74 @@ function App() {
 
       {/* Hero Section */}
       <section id="home" className="hero-section">
-        <div className="container hero-content">
-          <div className="hero-text">
-            <h1 className="hero-title">Hi, I'm <span className="gradient-text">M.G. Naveen Dilshana</span></h1>
+        <motion.div 
+          className="container hero-content"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+        >
+          <motion.div className="hero-text" variants={fadeInUp}>
+            <h1 className="hero-title">Hi, I'm <span className="gradient-text">M.G. Naveen Dilshan</span></h1>
             <p className="hero-subtitle">Full Stack Developer | HNDIT Student</p>
             <p className="hero-description">Crafting robust software for real-world problems. From Inventory Management Systems to AI powered web tools, I bring ideas to life with modern technology.</p>
             <div className="hero-buttons">
               <a href="#contact" className="btn btn-primary">Let's Chat</a>
               <a href="#projects" className="btn btn-secondary">View Projects</a>
             </div>
-          </div>
-          <div className="hero-image-container">
+          </motion.div>
+          <motion.div className="hero-image-container" variants={fadeInUp}>
             <div className="profile-img-wrapper">
                 <img src={profilePic} alt="Naveen" className="profile-img" />
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* About Section */}
       <section id="about" className="about-section">
         <div className="container">
-          <h2 className="section-title" style={{textAlign:'center', marginBottom: '2rem'}}>About Me</h2>
+          <motion.h2 
+            className="section-title" 
+            style={{textAlign:'center', marginBottom: '2rem'}}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            About Me
+          </motion.h2>
           
-          <div className="bento-grid">
-            {/* Main Bio Box */}
-            <div className="bento-box glass-card bio-box">
+          <motion.div 
+            className="bento-grid"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainer}
+          >
+            <motion.div className="bento-box glass-card bio-box" variants={fadeInUp}>
               <h3 className="bento-title">Who am I? 💻</h3>
-              <p>I'm M.G. Naveen Dilshana, a passionate Full Stack Developer and HNDIT student at SLIATE ATI Nawalapitiya. I specialize in building clean, scalable applications using React, Node.js, and Spring Boot.</p>
-            </div>
+              <p className="bio-text">
+                I'm <span className="highlight-text">M.G. Naveen Dilshan</span>, a passionate Full Stack Developer and HNDIT student at SLIATE ATI Nawalapitiya. 
+                <br/><br/>
+                I specialize in building clean, scalable applications using <b>React, Node.js, and Spring Boot</b>. My goal is to simplify complex problems with elegant code solutions.
+              </p>
+            </motion.div>
 
-            {/* Side Boxes */}
-            <div className="bento-box glass-card">
+            <motion.div className="bento-box glass-card" variants={fadeInUp}>
               <h3 className="bento-title">🎓 Education</h3>
               <p>HND in Information Technology<br/><span className="label">SLIATE ATI, Nawalapitiya</span></p>
-            </div>
+            </motion.div>
             
-            <div className="bento-box glass-card">
+            <motion.div className="bento-box glass-card" variants={fadeInUp}>
               <h3 className="bento-title">🚀 Personal Info</h3>
               <ul className="info-list">
                 <li><span className="label">Age:</span> {personalInfo.age}</li>
                 <li><span className="label">City:</span> {personalInfo.city}</li>
                 <li><span className="label">Phone:</span> {personalInfo.phone}</li>
               </ul>
-            </div>
+            </motion.div>
 
-            {/* Stats Bar */}
-            <div className="bento-box stats-box glass-card">
+            <motion.div className="bento-box stats-box glass-card" variants={fadeInUp}>
                 <div className="stat-item">
                     <div className="stat-num">02+</div>
                     <div className="stat-lbl">Years Exp.</div>
@@ -165,8 +210,8 @@ function App() {
                     <div className="stat-num">10+</div>
                     <div className="stat-lbl">Projects</div>
                 </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
@@ -174,17 +219,23 @@ function App() {
       <section id="skills" className="skills-section">
         <div className="container">
           <h2 className="section-title" style={{textAlign:'center', marginBottom: '3rem'}}>My Skills</h2>
-          <div className="skills-grid">
+          <motion.div 
+            className="skills-grid"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+          >
             {skills.map(skill => (
-              <div key={skill.name} className="skill-card glass-card">
+              <motion.div key={skill.name} className="skill-card glass-card" variants={fadeInUp}>
                 <div className="skill-info">
                   <h4>{skill.name}</h4>
                   <span className="level-badge">{skill.level}</span>
                 </div>
-                <div className="progress-bg"><div className="progress-fill" style={{width: `${skill.progress}%`}}></div></div>
-              </div>
+                <div className="progress-bg"><motion.div className="progress-fill" initial={{width: 0}} whileInView={{width: `${skill.progress}%`}} transition={{duration: 1.5, delay: 0.5}}></motion.div></div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -192,25 +243,38 @@ function App() {
       <section id="projects" className="projects-section">
         <div className="container">
           <h2 className="section-title" style={{textAlign:'center', marginBottom: '3rem'}}>Featured Projects</h2>
-          <div className="projects-grid">
+          <motion.div 
+            className="projects-grid"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+          >
             {projects.map(p => (
-              <div key={p.id} className="project-card glass-card">
+              <motion.div key={p.id} className="project-card glass-card" variants={fadeInUp} whileHover={{ y: -10, transition: { duration: 0.3 } }}>
                 <h3>{p.title}</h3>
                 <p style={{color: 'var(--text-secondary)', fontSize: '0.9rem'}}>{p.desc}</p>
                 <div className="tech-tags">{p.tech.map(t => <span key={t}>{t}</span>)}</div>
                 <a href={p.link} className="btn btn-outline">View Code</a>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Contact Section */}
       <section id="contact" className="contact-section">
-        <div className="container">
+        <motion.div 
+          className="container"
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+        >
           <div className="contact-card glass-card">
             <h2>Let's Work Together! 🚀</h2>
             <p style={{marginBottom: '2rem', color: '#ccc'}}>Have a project in mind? Let's discuss how I can help you.</p>
+            
             <form onSubmit={sendEmail} className="contact-form">
               <div className="form-group">
                 <input type="text" name="from_name" placeholder="Your Name" required />
@@ -219,9 +283,10 @@ function App() {
               <textarea name="message" placeholder="How can I help you?" rows="5" required></textarea>
               <button type="submit" className="btn btn-primary">Send Message</button>
             </form>
+            
           </div>
           <p className="copyright" style={{marginTop: '3rem', fontSize: '0.8rem', color: '#666'}}>© 2026 M.G. Naveen Dilshana. All rights reserved.</p>
-        </div>
+        </motion.div>
       </section>
 
       {/* Chatbot Interface */}
