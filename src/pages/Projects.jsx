@@ -28,7 +28,7 @@ function Projects({ projects }) {
         {/* GitHub CTA */}
         <div style={{ textAlign: 'center', marginTop: '4rem' }}>
           <a 
-            href="https://github.com/navee-d" 
+            href="https://github.com/navd" 
             target="_blank" 
             rel="noopener noreferrer"
             className="btn btn-primary"
