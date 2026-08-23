@@ -116,22 +116,23 @@ function App() {
     const email = form.email.value
     const message = form.message.value
 
-    fetch("https://formsubmit.co/ajax/naveendedirisinghe@gmail.com", {
+    fetch("https://api.web3forms.com/submit", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
       body: JSON.stringify({
-        _subject: `Portfolio Contact from ${name}`,
-        Name: name,
-        Email: email,
-        Message: message
+        access_key: "ade6176e-b9bc-47d8-aeb5-101744cb42d2",
+        subject: `Portfolio Contact from ${name}`,
+        name: name,
+        email: email,
+        message: message
       })
     })
       .then(response => response.json())
       .then(data => {
-        if (data.success === "true" || data.success === true) {
+        if (data.success) {
           setFormStatus('success')
           form.reset()
           setTimeout(() => setFormStatus(null), 4000)
