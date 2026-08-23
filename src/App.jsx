@@ -116,34 +116,34 @@ function App() {
     const email = form.email.value
     const message = form.message.value
 
-    if (window.Email) {
-      window.Email.send({
-        Host: "smtp.gmail.com",
-        Username: "naveendedirisinghe@gmail.com",
-        Password: "flgq evif qoqk wshp",
-        To: 'naveendedirisinghe@gmail.com',
-        From: "naveendedirisinghe@gmail.com",
-        Subject: `Portfolio Contact from ${name}`,
-        Body: `Name: ${name}<br>Email: ${email}<br>Message: ${message}`
-      }).then(
-        msg => {
-          if (msg === "OK") {
-            setFormStatus('success')
-            form.reset()
-            setTimeout(() => setFormStatus(null), 3000)
-          } else {
-            setFormStatus('error')
-            setTimeout(() => setFormStatus(null), 3000)
-          }
-        }
-      ).catch(() => {
-        setFormStatus('error')
-        setTimeout(() => setFormStatus(null), 3000)
+    fetch("https://formsubmit.co/ajax/naveendedirisinghe@gmail.com", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        _subject: `Portfolio Contact from ${name}`,
+        Name: name,
+        Email: email,
+        Message: message
       })
-    } else {
-      setFormStatus('error')
-      setTimeout(() => setFormStatus(null), 3000)
-    }
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success === "true" || data.success === true) {
+          setFormStatus('success')
+          form.reset()
+          setTimeout(() => setFormStatus(null), 4000)
+        } else {
+          setFormStatus('error')
+          setTimeout(() => setFormStatus(null), 4000)
+        }
+      })
+      .catch(error => {
+        setFormStatus('error')
+        setTimeout(() => setFormStatus(null), 4000)
+      })
   }
 
   // ─── Services Data ───────────────────────────────────────────────────────
