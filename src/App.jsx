@@ -89,6 +89,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('all')
   const [navScrolled, setNavScrolled] = useState(false)
   const [formStatus, setFormStatus] = useState(null)
+  const [activeProject, setActiveProject] = useState(0)
 
   const roles = useTypewriter(
     ['Backend Developer', 'Full Stack Developer', 'Software Intern', 'REST API Builder', 'HNDIT Student'],
@@ -176,11 +177,35 @@ function App() {
     },
     {
       year: '2026',
+      title: 'ATI Nawalapitiya Official Website',
+      place: 'SLIATE ATI Nawalapitiya',
+      desc: 'Developed the official website for SLIATE ATI Nawalapitiya. Includes course information, faculty details, news and events sections.',
+      icon: '🏫',
+      color: 'cyan'
+    },
+    {
+      year: '2026',
+      title: 'Restaurant Management System',
+      place: 'Personal Project',
+      desc: 'Complete restaurant management solution — table reservations, order management, menu management, and billing system.',
+      icon: '🍽️',
+      color: 'blue'
+    },
+    {
+      year: '2026',
+      title: '100 Tables — SaaS Platform',
+      place: 'Personal Project · Testing Phase',
+      desc: 'Multi-tenant SaaS platform for restaurant table management. Currently in testing with 100+ table configurations and multi-user support.',
+      icon: '🪑',
+      color: 'purple'
+    },
+    {
+      year: '2026',
       title: '4 Professional Certifications',
       place: 'Educative · Cisco · Udemy',
       desc: 'Earned certifications in Web Security, Cloud Computing, Cybersecurity, and Computer Networks.',
       icon: '🏆',
-      color: 'cyan'
+      color: 'green'
     },
     {
       year: '2026',
@@ -188,7 +213,7 @@ function App() {
       place: 'Open to Opportunities',
       desc: 'Actively seeking internship roles in Backend or Full Stack development to gain industry experience and contribute to real-world projects.',
       icon: '🎯',
-      color: 'blue'
+      color: 'cyan'
     }
   ]
 
@@ -246,28 +271,46 @@ function App() {
   // ─── Projects ────────────────────────────────────────────────────────────
   const projects = [
     {
-      id: 1, title: 'ServiceHubSL', subtitle: 'SaaS Service Marketplace', icon: '🛒',
+      id: 1, title: 'ServiceHubSL', subtitle: 'SaaS Service Marketplace · 2026', icon: '🛒',
       desc: 'A SaaS-based marketplace connecting customers with service providers. Features authentication, service management, booking, user dashboards, and payment functionality.',
       tech: ['React.js', 'Node.js', 'Express.js', 'PostgreSQL', 'Prisma ORM', 'Tailwind CSS'],
-      link: '#', badge: 'SaaS', color: 'cyan'
+      link: '#', badge: 'SaaS', color: 'cyan', status: null
     },
     {
-      id: 2, title: 'Service Finder Microservice', subtitle: 'Microservices Architecture', icon: '🔧',
+      id: 2, title: 'Service Finder Microservice', subtitle: 'Microservices Architecture · 2025', icon: '🔧',
       desc: 'REST APIs using Spring Boot for service management. Applied microservices-based architecture with MySQL via Hibernate/JPA for persistent data storage.',
       tech: ['Java', 'Spring Boot', 'MySQL', 'Hibernate / JPA'],
-      link: '#', badge: 'Microservices', color: 'blue'
+      link: '#', badge: 'Microservices', color: 'blue', status: null
     },
     {
-      id: 3, title: 'Library Management System', subtitle: 'Backend REST API', icon: '📚',
+      id: 3, title: 'ATI Nawalapitiya Website', subtitle: 'Institutional Website · 2026', icon: '🏫',
+      desc: 'Official website for SLIATE ATI Nawalapitiya. Covers course information, faculty profiles, news, events, and contact details for the institution.',
+      tech: ['PHP', 'HTML5', 'CSS3', 'JavaScript', 'MySQL'],
+      link: '#', badge: 'Web', color: 'purple', status: null
+    },
+    {
+      id: 4, title: 'Restaurant Management System', subtitle: 'Business Management · 2026', icon: '🍽️',
+      desc: 'Full restaurant management solution — table reservations, real-time order management, menu control, kitchen display, and billing system.',
+      tech: ['Node.js', 'Express.js', 'React.js', 'MySQL', 'Tailwind CSS'],
+      link: '#', badge: 'Management', color: 'green', status: null
+    },
+    {
+      id: 5, title: '100 Tables — SaaS', subtitle: 'Multi-tenant SaaS · 2026', icon: '🪑',
+      desc: 'Multi-tenant SaaS platform for restaurant table management. 100+ table configurations, multi-user roles, real-time updates. Currently in testing phase.',
+      tech: ['React.js', 'Node.js', 'PostgreSQL', 'Prisma ORM', 'Docker'],
+      link: '#', badge: 'SaaS', color: 'cyan', status: 'testing'
+    },
+    {
+      id: 6, title: 'Library Management System', subtitle: 'Backend REST API', icon: '📚',
       desc: 'REST APIs for managing books, members, and borrowing records. Full CRUD operations with relational database integration and API testing via Postman.',
       tech: ['Node.js', 'Express.js', 'PostgreSQL', 'Postman'],
-      link: '#', badge: 'Backend', color: 'purple'
+      link: '#', badge: 'Backend', color: 'blue', status: null
     },
     {
-      id: 4, title: 'Vehicle Inventory Management', subtitle: 'Inventory System', icon: '🚗',
+      id: 7, title: 'Vehicle Inventory Management', subtitle: 'Inventory System', icon: '🚗',
       desc: 'REST-based backend for managing vehicle records. Implemented CRUD operations, search functionality, and relational database integration.',
       tech: ['Node.js', 'MySQL', 'PostgreSQL'],
-      link: '#', badge: 'Backend', color: 'green'
+      link: '#', badge: 'Backend', color: 'purple', status: null
     }
   ]
 
@@ -564,17 +607,90 @@ function App() {
       <section id="projects" className="projects-section">
         <div className="container">
           <SectionTitle subtitle="Real-world applications built with modern tech stacks">Featured Projects</SectionTitle>
-          <motion.div className="projects-grid" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05 }} variants={staggerContainer}>
-            {projects.map(p => (
-              <motion.div key={p.id} className={`project-card glass-card project-${p.color}`} variants={scaleIn} whileHover={{ y: -8, transition: { duration: 0.25 } }}>
+
+          {/* Carousel */}
+          <div className="projects-carousel-wrapper">
+            {/* Prev button */}
+            <motion.button
+              className="carousel-arrow carousel-prev"
+              onClick={() => setActiveProject(p => (p - 1 + projects.length) % projects.length)}
+              whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
+            >‹</motion.button>
+
+            {/* Main featured card */}
+            <div className="carousel-main">
+              <AnimatePresence mode="wait">
+                {projects.map((p, i) => i === activeProject && (
+                  <motion.div
+                    key={p.id}
+                    className={`project-card-featured glass-card project-${p.color}`}
+                    initial={{ opacity: 0, x: 60, scale: 0.96 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: -60, scale: 0.96 }}
+                    transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  >
+                    <div className="project-featured-header">
+                      <div className="project-featured-icon">{p.icon}</div>
+                      <div>
+                        <div className="project-featured-badges">
+                          <span className={`project-badge badge-${p.color}`}>{p.badge}</span>
+                          {p.status === 'testing' && <span className="badge-testing">🧪 Testing</span>}
+                        </div>
+                        <h3>{p.title}</h3>
+                        <p className="project-subtitle">{p.subtitle}</p>
+                      </div>
+                    </div>
+                    <p className="project-desc">{p.desc}</p>
+                    <div className="tech-tags">{p.tech.map(t => <span key={t}>{t}</span>)}</div>
+                    <div className="project-counter">{activeProject + 1} / {projects.length}</div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+
+            {/* Next button */}
+            <motion.button
+              className="carousel-arrow carousel-next"
+              onClick={() => setActiveProject(p => (p + 1) % projects.length)}
+              whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
+            >›</motion.button>
+          </div>
+
+          {/* Dot indicators */}
+          <div className="carousel-dots">
+            {projects.map((_, i) => (
+              <motion.button
+                key={i}
+                className={`carousel-dot ${i === activeProject ? 'active' : ''}`}
+                onClick={() => setActiveProject(i)}
+                whileHover={{ scale: 1.3 }}
+                whileTap={{ scale: 0.8 }}
+                animate={{ scale: i === activeProject ? 1.2 : 1 }}
+              />
+            ))}
+          </div>
+
+          {/* Mini project grid — all projects */}
+          <motion.div className="projects-mini-grid" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05 }} variants={staggerContainer}>
+            {projects.map((p, i) => (
+              <motion.div
+                key={p.id}
+                className={`project-mini-card glass-card project-${p.color} ${i === activeProject ? 'mini-active' : ''}`}
+                variants={scaleIn}
+                onClick={() => setActiveProject(i)}
+                whileHover={{ y: -5, scale: 1.02, transition: { duration: 0.2 } }}
+                style={{ cursor: 'pointer' }}
+              >
                 <div className="project-header">
-                  <span className="project-icon">{p.icon}</span>
-                  <span className={`project-badge badge-${p.color}`}>{p.badge}</span>
+                  <span className="project-icon" style={{ fontSize: '1.4rem' }}>{p.icon}</span>
+                  <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                    <span className={`project-badge badge-${p.color}`}>{p.badge}</span>
+                    {p.status === 'testing' && <span className="badge-testing">🧪</span>}
+                  </div>
                 </div>
-                <h3>{p.title}</h3>
+                <h3 style={{ fontSize: '0.95rem' }}>{p.title}</h3>
                 <p className="project-subtitle">{p.subtitle}</p>
-                <p className="project-desc">{p.desc}</p>
-                <div className="tech-tags">{p.tech.map(t => <span key={t}>{t}</span>)}</div>
+                <div className="tech-tags">{p.tech.slice(0, 3).map(t => <span key={t}>{t}</span>)}</div>
                 <div className="btn btn-outline">🔒 Private Repository</div>
               </motion.div>
             ))}
