@@ -42,7 +42,7 @@ function App() {
     age: "21 Years",
     city: "Nawalapitiya, Sri Lanka",
     phone: "072 812 1216",
-    email: "dilshannaveen124@gmail.com"
+    email: "naveendedirisinghe@gmail.com"
   }
 
   // ===== UPDATED SKILLS FROM CV =====
@@ -269,8 +269,8 @@ function App() {
               <img src={profilePic} alt="Naveen Dilshan" className="profile-img" />
             </div>
             <div className="hero-social-links">
-              <a href="https://github.com/naveendilshan" target="_blank" rel="noopener noreferrer" className="social-chip">GitHub</a>
-              <a href="https://linkedin.com/in/naveendilshan" target="_blank" rel="noopener noreferrer" className="social-chip">LinkedIn</a>
+              <a href="https://github.com/navee-d" target="_blank" rel="noopener noreferrer" className="social-chip">GitHub</a>
+              <a href="https://www.linkedin.com/in/naveen-dilshan-3b6223428/" target="_blank" rel="noopener noreferrer" className="social-chip">LinkedIn</a>
             </div>
           </motion.div>
         </motion.div>
@@ -312,7 +312,7 @@ function App() {
               <ul className="info-list">
                 <li><span className="label">City:</span> {personalInfo.city}</li>
                 <li><span className="label">Phone:</span> {personalInfo.phone}</li>
-                <li><span className="label">Email:</span> {personalInfo.email}</li>
+                <li><span className="label">Email:</span> <a href="mailto:naveendedirisinghe@gmail.com" style={{color:'var(--text-primary)'}}>{personalInfo.email}</a></li>
                 <li><span className="label">English:</span> Intermediate / Working</li>
               </ul>
             </motion.div>
@@ -482,7 +482,8 @@ function App() {
             
           </div>
           <p className="copyright" style={{marginTop: '3rem', fontSize: '0.8rem', color: '#666', textAlign: 'center'}}>
-            2026 M.G. Naveen Dilshan. All rights reserved.
+            © 2026 M.G. Naveen Dilshan. All rights reserved. ·{' '}
+            <a href="mailto:naveendedirisinghe@gmail.com" style={{color:'var(--primary-cyan)'}}>naveendedirisinghe@gmail.com</a>
           </p>
         </motion.div>
       </section>
