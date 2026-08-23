@@ -9,6 +9,7 @@ html { scroll-behavior: smooth; }
   --primary-blue:   #0066ff;
   --primary-purple: #8b5cf6;
   --primary-green:  #10b981;
+  --wa-green:       #25d366;
   --dark-bg:        #03030a;
   --card-bg:        rgba(12, 12, 24, 0.6);
   --text-primary:   #ffffff;
@@ -28,34 +29,7 @@ body {
 
 .app { min-height: 100vh; position: relative; }
 
-/* ─── Cursor Glow ─────────────────────────────────────────────────────────── */
-.cursor-glow {
-  position: fixed;
-  width: 380px;
-  height: 380px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0,242,255,0.06) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-  transform: translate(-50%, -50%);
-  will-change: transform;
-}
-
-/* ─── Particles ────────────────────────────────────────────────────────────── */
-.particles-container {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
-.particle {
-  position: absolute;
-  border-radius: 50%;
-  background: var(--primary-cyan);
-  box-shadow: 0 0 6px rgba(0,242,255,0.4);
-  will-change: transform, opacity;
-}
+/* ─── subtle ambient glow (CSS only, no JS) ───────────────────────────────── */
 
 /* ─── Background Mesh ──────────────────────────────────────────────────────── */
 .app::before {
@@ -291,6 +265,12 @@ a { text-decoration: none; color: inherit; }
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.12);
   color: var(--primary-cyan);
+}
+.btn-whatsapp {
+  background: linear-gradient(135deg, #25d366, #128c4e);
+  color: white;
+  box-shadow: 0 8px 24px rgba(37,211,102,0.22);
+  gap: 7px;
 }
 
 /* ─── Profile Image ─────────────────────────────────────────────────────────── */
@@ -657,9 +637,72 @@ a { text-decoration: none; color: inherit; }
 .contact-section { padding: 110px 0; text-align: center; }
 .contact-card { max-width: 760px; margin: 0 auto; padding: 3.5rem 2.5rem; }
 .contact-card h2 { font-size: 2rem; font-weight: 800; margin-bottom: 0.6rem; }
-.contact-form { display: flex; flex-direction: column; gap: 1.1rem; max-width: 500px; margin: 2rem auto; }
+.contact-sub { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 2rem; }
+
+/* Contact chips */
+.contact-chips {
+  display: flex;
+  justify-content: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.contact-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  border-radius: 50px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  transition: all 0.25s;
+  border: none;
+}
+.chip-wa  { background: linear-gradient(135deg,#25d366,#128c4e); color: white; box-shadow: 0 5px 18px rgba(37,211,102,0.25); }
+.chip-wa:hover { box-shadow: 0 8px 28px rgba(37,211,102,0.4); transform: translateY(-2px); }
+.chip-email { background: rgba(0,242,255,0.08); border: 1px solid rgba(0,242,255,0.2); color: var(--primary-cyan); }
+.chip-email:hover { background: rgba(0,242,255,0.15); transform: translateY(-2px); }
+.chip-li  { background: rgba(0,102,255,0.08); border: 1px solid rgba(0,102,255,0.2); color: #6699ff; }
+.chip-li:hover { background: rgba(0,102,255,0.15); transform: translateY(-2px); }
+
+.contact-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 500px;
+  margin: 0 auto 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+.contact-divider::before,
+.contact-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.contact-form { display: flex; flex-direction: column; gap: 1.1rem; max-width: 500px; margin: 1rem auto; }
 .form-group { display: flex; gap: 1rem; }
 .form-group input { width: 50%; }
+
+/* ─── Floating WhatsApp ─── */
+.wa-float {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#25d366,#128c4e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 24px rgba(37,211,102,0.4);
+  z-index: 2000;
+  transition: box-shadow 0.25s;
+}
+.wa-float:hover { box-shadow: 0 10px 35px rgba(37,211,102,0.55); }
 .contact-form input,
 .contact-form textarea {
   padding: 0.95rem 1.1rem;

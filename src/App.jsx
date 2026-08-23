@@ -1,37 +1,33 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import emailjs from 'emailjs-com'
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion'
+import { motion, useSpring, AnimatePresence } from 'framer-motion'
 import './App.css'
 import profilePic from './assets/profile.jpg'
 
 // ─── Animation Variants ────────────────────────────────────────────────────
 const fadeInUp = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] } }
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] } }
 }
-
 const fadeInLeft = {
-  hidden: { opacity: 0, x: -60 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] } }
+  hidden: { opacity: 0, x: -50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] } }
 }
-
 const fadeInRight = {
-  hidden: { opacity: 0, x: 60 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] } }
+  hidden: { opacity: 0, x: 50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] } }
 }
-
 const staggerContainer = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.1 } }
+  visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.05 } }
 }
-
 const scaleIn = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } }
+  hidden: { opacity: 0, scale: 0.92 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] } }
 }
 
 // ─── Typewriter Hook ───────────────────────────────────────────────────────
-function useTypewriter(words, speed = 100, pause = 2000) {
+function useTypewriter(words, speed = 95, pause = 1800) {
   const [text, setText] = useState('')
   const [wordIndex, setWordIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -41,15 +37,10 @@ function useTypewriter(words, speed = 100, pause = 2000) {
     const timeout = setTimeout(() => {
       if (!isDeleting) {
         setText(current.substring(0, text.length + 1))
-        if (text === current) {
-          setTimeout(() => setIsDeleting(true), pause)
-        }
+        if (text === current) setTimeout(() => setIsDeleting(true), pause)
       } else {
         setText(current.substring(0, text.length - 1))
-        if (text === '') {
-          setIsDeleting(false)
-          setWordIndex(i => i + 1)
-        }
+        if (text === '') { setIsDeleting(false); setWordIndex(i => i + 1) }
       }
     }, isDeleting ? speed / 2 : speed)
     return () => clearTimeout(timeout)
@@ -58,47 +49,16 @@ function useTypewriter(words, speed = 100, pause = 2000) {
   return text
 }
 
-// ─── Floating Particles ────────────────────────────────────────────────────
-function Particles() {
-  const particles = Array.from({ length: 22 }, (_, i) => ({
-    id: i,
-    size: Math.random() * 4 + 1,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    duration: Math.random() * 18 + 12,
-    delay: Math.random() * 8,
-    opacity: Math.random() * 0.4 + 0.1,
-  }))
-
-  return (
-    <div className="particles-container">
-      {particles.map(p => (
-        <motion.div
-          key={p.id}
-          className="particle"
-          style={{ width: p.size, height: p.size, left: `${p.x}%`, top: `${p.y}%`, opacity: p.opacity }}
-          animate={{
-            y: [0, -40, 0],
-            x: [0, Math.random() * 30 - 15, 0],
-            opacity: [p.opacity, p.opacity * 2, p.opacity],
-          }}
-          transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      ))}
-    </div>
-  )
-}
-
-// ─── Animated Section Title ────────────────────────────────────────────────
+// ─── Section Title ────────────────────────────────────────────────────────
 function SectionTitle({ children, subtitle }) {
   return (
     <div className="section-title-wrapper">
       <motion.h2
         className="section-title"
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ duration: 0.55 }}
       >
         {children}
         <motion.span
@@ -106,7 +66,7 @@ function SectionTitle({ children, subtitle }) {
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 0.6, delay: 0.3 }}
         />
       </motion.h2>
       {subtitle && (
@@ -115,7 +75,7 @@ function SectionTitle({ children, subtitle }) {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.35 }}
         >
           {subtitle}
         </motion.p>
@@ -124,51 +84,16 @@ function SectionTitle({ children, subtitle }) {
   )
 }
 
-// ─── Cursor Glow ────────────────────────────────────────────────────────────
-function CursorGlow() {
-  const [pos, setPos] = useState({ x: 0, y: 0 })
-  const springX = useSpring(0, { stiffness: 80, damping: 20 })
-  const springY = useSpring(0, { stiffness: 80, damping: 20 })
-
-  useEffect(() => {
-    const move = e => { setPos({ x: e.clientX, y: e.clientY }) }
-    window.addEventListener('mousemove', move)
-    return () => window.removeEventListener('mousemove', move)
-  }, [])
-
-  useEffect(() => { springX.set(pos.x); springY.set(pos.y) }, [pos])
-
-  return (
-    <motion.div
-      className="cursor-glow"
-      style={{ left: springX, top: springY }}
-    />
-  )
-}
-
 // ─── Main App ──────────────────────────────────────────────────────────────
 function App() {
-  const [isBotOpen, setIsBotOpen] = useState(false)
-  const [messages, setMessages] = useState([
-    { text: "Hello! I'm Navee AI Helper. How can I help you?", isBot: true }
-  ])
-  const [input, setInput] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
   const [activeTab, setActiveTab] = useState('all')
   const [navScrolled, setNavScrolled] = useState(false)
-  const chatEndRef = useRef(null)
+  const [formStatus, setFormStatus] = useState(null) // 'sending' | 'success' | 'error'
 
   const roles = useTypewriter(
     ['Backend Developer', 'Full Stack Developer', 'Software Intern', 'REST API Builder', 'HNDIT Student'],
     90, 1800
   )
-
-  const AGENT_URL = "https://wigdnksubw3ngtuhjbzpc7yq.agents.do-ai.run"
-  const AGENT_KEY = "l7kt4QprYUzucEc7ehpcvACDVHtfR5eZ"
-
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages, isLoading])
 
   useEffect(() => {
     const onScroll = () => setNavScrolled(window.scrollY > 50)
@@ -178,9 +103,9 @@ function App() {
 
   const personalInfo = {
     name: "M.G. Naveen Dilshan",
-    age: "21 Years",
     city: "Nawalapitiya, Sri Lanka",
     phone: "072 812 1216",
+    whatsapp: "94728121216",
     email: "naveendedirisinghe@gmail.com"
   }
 
@@ -236,28 +161,28 @@ function App() {
 
   const projects = [
     {
-      id: 1, title: 'ServiceHubSL', subtitle: 'SaaS Service Marketplace',
+      id: 1, title: 'ServiceHubSL', subtitle: 'SaaS Service Marketplace', icon: '🛒',
       desc: 'A SaaS-based marketplace connecting customers with service providers. Features authentication, service management, booking, user dashboards, and payment functionality.',
       tech: ['React.js', 'Node.js', 'Express.js', 'PostgreSQL', 'Prisma ORM', 'Tailwind CSS'],
-      link: '#', badge: 'SaaS', color: 'cyan', icon: '🛒'
+      link: '#', badge: 'SaaS', color: 'cyan'
     },
     {
-      id: 2, title: 'Service Finder Microservice', subtitle: 'Microservices Architecture',
+      id: 2, title: 'Service Finder Microservice', subtitle: 'Microservices Architecture', icon: '🔧',
       desc: 'REST APIs using Spring Boot for service management. Applied microservices-based architecture with MySQL via Hibernate/JPA for persistent data storage.',
       tech: ['Java', 'Spring Boot', 'MySQL', 'Hibernate / JPA'],
-      link: '#', badge: 'Microservices', color: 'blue', icon: '🔧'
+      link: '#', badge: 'Microservices', color: 'blue'
     },
     {
-      id: 3, title: 'Library Management System', subtitle: 'Backend REST API',
+      id: 3, title: 'Library Management System', subtitle: 'Backend REST API', icon: '📚',
       desc: 'REST APIs for managing books, members, and borrowing records. Full CRUD operations with relational database integration and API testing via Postman.',
       tech: ['Node.js', 'Express.js', 'PostgreSQL', 'Postman'],
-      link: '#', badge: 'Backend', color: 'purple', icon: '📚'
+      link: '#', badge: 'Backend', color: 'purple'
     },
     {
-      id: 4, title: 'Vehicle Inventory Management', subtitle: 'Inventory System',
+      id: 4, title: 'Vehicle Inventory Management', subtitle: 'Inventory System', icon: '🚗',
       desc: 'REST-based backend for managing vehicle records. Implemented CRUD operations, search functionality, and relational database integration.',
       tech: ['Node.js', 'MySQL', 'PostgreSQL'],
-      link: '#', badge: 'Backend', color: 'green', icon: '🚗'
+      link: '#', badge: 'Backend', color: 'green'
     }
   ]
 
@@ -268,28 +193,18 @@ function App() {
     { title: 'Computer Networks Fundamentals', issuer: 'Udemy', year: '2026', icon: '🌐', color: 'green' }
   ]
 
-  const sendEmail = (e) => {
+  const sendEmail = async (e) => {
     e.preventDefault()
-    const senderName = e.target.from_name.value
-    emailjs.sendForm('service_qzdj9h6', 'template_dzxe7i9', e.target, 'Z8EWbyIIbI1e9gu-P')
-      .then(() => { alert(`Message sent! Thank you, ${senderName}.`); e.target.reset() })
-      .catch(err => alert("Error: " + err.text))
-  }
-
-  const handleSend = async () => {
-    if (!input.trim()) return
-    setMessages(prev => [...prev, { text: input, isBot: false }])
-    const cur = input; setInput(""); setIsLoading(true)
+    setFormStatus('sending')
     try {
-      const res = await fetch(`${AGENT_URL}/api/v1/chat/completions`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${AGENT_KEY}` },
-        body: JSON.stringify({ messages: [{ role: "user", content: cur }] })
-      })
-      const data = await res.json()
-      setMessages(prev => [...prev, { text: data.choices?.[0]?.message?.content || "Sorry, error.", isBot: true }])
-    } catch { setMessages(prev => [...prev, { text: "AI Error.", isBot: true }]) }
-    finally { setIsLoading(false) }
+      await emailjs.sendForm('service_qzdj9h6', 'template_dzxe7i9', e.target, 'Z8EWbyIIbI1e9gu-P')
+      setFormStatus('success')
+      e.target.reset()
+      setTimeout(() => setFormStatus(null), 4000)
+    } catch {
+      setFormStatus('error')
+      setTimeout(() => setFormStatus(null), 4000)
+    }
   }
 
   const allSkills = skillCategories.flatMap(c => c.skills)
@@ -297,30 +212,27 @@ function App() {
 
   return (
     <div className="app">
-      <CursorGlow />
-      <Particles />
 
       {/* ── Navbar ── */}
       <motion.nav
         className={`navbar ${navScrolled ? 'scrolled' : ''}`}
-        initial={{ y: -100, opacity: 0 }}
+        initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
         <div className="nav-container">
-          <motion.div className="nav-logo" whileHover={{ scale: 1.05 }}>
+          <motion.div className="nav-logo" whileHover={{ scale: 1.04 }}>
             M.G. Naveen
           </motion.div>
           <div className="nav-menu">
-            {['home','about','skills','projects','certifications','contact'].map((item, i) => (
+            {['home', 'about', 'skills', 'projects', 'certifications', 'contact'].map((item, i) => (
               <motion.a
                 key={item}
                 href={`#${item}`}
                 className="nav-link"
-                initial={{ opacity: 0, y: -20 }}
+                initial={{ opacity: 0, y: -15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * i + 0.3 }}
-                whileHover={{ color: '#00f2ff' }}
+                transition={{ delay: 0.08 * i + 0.3 }}
               >
                 {item.charAt(0).toUpperCase() + item.slice(1)}
               </motion.a>
@@ -338,12 +250,9 @@ function App() {
           animate="visible"
           variants={staggerContainer}
         >
+          {/* Left */}
           <motion.div className="hero-text" variants={fadeInLeft}>
-            <motion.div
-              className="hero-badge"
-              animate={{ boxShadow: ['0 0 8px rgba(0,242,255,0.2)', '0 0 25px rgba(0,242,255,0.5)', '0 0 8px rgba(0,242,255,0.2)'] }}
-              transition={{ duration: 2.5, repeat: Infinity }}
-            >
+            <motion.div className="hero-badge" variants={fadeInUp}>
               🟢 Available for Internship
             </motion.div>
 
@@ -368,44 +277,54 @@ function App() {
               {['#Node.js', '#SpringBoot', '#React', '#PostgreSQL', '#Docker'].map((tag, i) => (
                 <motion.span
                   key={tag}
-                  initial={{ opacity: 0, scale: 0.7 }}
+                  initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.8 + i * 0.1 }}
-                  whileHover={{ scale: 1.1, color: '#00f2ff' }}
+                  transition={{ delay: 0.9 + i * 0.08 }}
                 >
                   {tag}
                 </motion.span>
               ))}
             </div>
 
-            <motion.div className="hero-buttons" variants={fadeInUp}>
+            <div className="hero-buttons">
               <motion.a
                 href="#contact"
                 className="btn btn-primary"
-                whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(0,242,255,0.4)' }}
+                whileHover={{ scale: 1.04, boxShadow: '0 18px 38px rgba(0,242,255,0.35)' }}
                 whileTap={{ scale: 0.97 }}
               >
                 Let's Chat 🚀
               </motion.a>
               <motion.a
+                href={`https://wa.me/${personalInfo.whatsapp}`}
+                target="_blank" rel="noopener noreferrer"
+                className="btn btn-whatsapp"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                WhatsApp
+              </motion.a>
+              <motion.a
                 href="#projects"
                 className="btn btn-secondary"
-                whileHover={{ scale: 1.05, borderColor: '#00f2ff' }}
+                whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
               >
                 View Projects
               </motion.a>
-            </motion.div>
+            </div>
           </motion.div>
 
+          {/* Right — Profile */}
           <motion.div className="hero-image-container" variants={fadeInRight}>
             <div className="profile-ring-outer">
               <div className="profile-ring-inner">
                 <motion.div
                   className="profile-img-wrapper"
-                  animate={{ y: [0, -18, 0] }}
+                  animate={{ y: [0, -14, 0] }}
                   transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                  whileHover={{ scale: 1.04 }}
+                  whileHover={{ scale: 1.03 }}
                 >
                   <img src={profilePic} alt="Naveen Dilshan" className="profile-img" />
                 </motion.div>
@@ -414,43 +333,39 @@ function App() {
 
             <motion.div
               className="hero-social-links"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2 }}
+              transition={{ delay: 1.1 }}
             >
               <motion.a
                 href="https://github.com/navee-d"
                 target="_blank" rel="noopener noreferrer"
                 className="social-chip"
-                whileHover={{ scale: 1.08, y: -3 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.06, y: -2 }}
               >
-                <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
                 GitHub
               </motion.a>
               <motion.a
                 href="https://www.linkedin.com/in/naveen-dilshan-3b6223428/"
                 target="_blank" rel="noopener noreferrer"
                 className="social-chip"
-                whileHover={{ scale: 1.08, y: -3 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.06, y: -2 }}
               >
-                <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 23.2 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                 LinkedIn
               </motion.a>
             </motion.div>
           </motion.div>
         </motion.div>
 
-        {/* Scroll indicator */}
+        {/* Scroll hint */}
         <motion.div
           className="scroll-indicator"
-          animate={{ y: [0, 10, 0], opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          animate={{ y: [0, 8, 0], opacity: [0.4, 0.9, 0.4] }}
+          transition={{ duration: 2.2, repeat: Infinity }}
         >
-          <div className="scroll-mouse">
-            <div className="scroll-wheel" />
-          </div>
+          <div className="scroll-mouse"><div className="scroll-wheel" /></div>
         </motion.div>
       </section>
 
@@ -462,21 +377,21 @@ function App() {
             className="bento-grid"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
+            viewport={{ once: true, amount: 0.1 }}
             variants={staggerContainer}
           >
-            <motion.div className="bento-box glass-card bio-box" variants={fadeInLeft} whileHover={{ borderColor: 'rgba(0,242,255,0.4)', boxShadow: '0 20px 60px rgba(0,242,255,0.08)' }}>
+            <motion.div className="bento-box glass-card bio-box" variants={fadeInLeft} whileHover={{ borderColor: 'rgba(0,242,255,0.3)' }}>
               <h3 className="bento-title">Who am I? 💻</h3>
               <p className="bio-text">
                 I'm <span className="highlight-text">M.G. Naveen Dilshan</span>, a passionate Software Engineering student pursuing an HNDIT at SLIATE.
                 <br /><br />
-                I specialize in building <strong>REST APIs, database-driven applications, and SaaS systems</strong> using Node.js, Express.js, Java Spring Boot, PostgreSQL, and React.
+                I specialize in building <strong>REST APIs, database-driven applications, and SaaS systems</strong> using Node.js, Express.js, Java Spring Boot, PostgreSQL, and React. My goal is to contribute to real-world projects through a Software Engineering Internship.
                 <br /><br />
                 <span className="label">📚 HNDIT — SLIATE | Expected: 2026</span>
               </p>
             </motion.div>
 
-            <motion.div className="bento-box glass-card" variants={fadeInRight} whileHover={{ borderColor: 'rgba(0,242,255,0.4)' }}>
+            <motion.div className="bento-box glass-card" variants={fadeInRight} whileHover={{ borderColor: 'rgba(0,242,255,0.3)' }}>
               <h3 className="bento-title">Personal Info</h3>
               <ul className="info-list">
                 {[
@@ -485,7 +400,7 @@ function App() {
                   ['📧 Email', personalInfo.email],
                   ['🌐 English', 'Intermediate / Working'],
                 ].map(([label, val]) => (
-                  <motion.li key={label} whileHover={{ x: 4 }}>
+                  <motion.li key={label} whileHover={{ x: 3 }}>
                     <span className="label">{label}</span>
                     <span>{val}</span>
                   </motion.li>
@@ -493,18 +408,18 @@ function App() {
               </ul>
             </motion.div>
 
-            <motion.div className="bento-box glass-card soft-skills-box" variants={fadeInRight} whileHover={{ borderColor: 'rgba(0,242,255,0.4)' }}>
+            <motion.div className="bento-box glass-card soft-skills-box" variants={fadeInRight} whileHover={{ borderColor: 'rgba(0,242,255,0.3)' }}>
               <h3 className="bento-title">Soft Skills</h3>
               <div className="soft-skills-tags">
                 {['Problem Solving', 'Analytical Thinking', 'Team Collaboration', 'Communication', 'Time Management', 'Adaptability'].map((s, i) => (
                   <motion.span
                     key={s}
                     className="soft-skill-tag"
-                    initial={{ opacity: 0, scale: 0.8 }}
+                    initial={{ opacity: 0, scale: 0.85 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
-                    transition={{ delay: i * 0.08 }}
-                    whileHover={{ scale: 1.1, backgroundColor: 'rgba(0,242,255,0.15)' }}
+                    transition={{ delay: i * 0.07 }}
+                    whileHover={{ scale: 1.08 }}
                   >
                     {s}
                   </motion.span>
@@ -519,11 +434,7 @@ function App() {
                 { num: '4', label: 'Certifications' },
                 { num: '8+', label: 'Technologies' },
               ].map(({ num, label }) => (
-                <motion.div
-                  key={label}
-                  className="stat-item"
-                  whileHover={{ scale: 1.1 }}
-                >
+                <motion.div key={label} className="stat-item" whileHover={{ scale: 1.08 }}>
                   <div className="stat-num">{num}</div>
                   <div className="stat-lbl">{label}</div>
                 </motion.div>
@@ -542,18 +453,17 @@ function App() {
 
           <motion.div
             className="skills-tabs"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
           >
             {[{ category: 'all', icon: '✦' }, ...skillCategories].map(c => (
               <motion.button
                 key={c.category}
                 className={`tab-btn ${activeTab === c.category ? 'active' : ''}`}
                 onClick={() => setActiveTab(c.category)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
               >
                 {c.icon} {c.category === 'all' ? 'All' : c.category}
               </motion.button>
@@ -564,20 +474,20 @@ function App() {
             <motion.div
               key={activeTab}
               className="skills-grid"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.35 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
             >
               {displaySkills.map((skill, i) => (
                 <motion.div
                   key={skill.name}
                   className="skill-card glass-card"
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.06, duration: 0.5 }}
-                  whileHover={{ y: -4, borderColor: 'rgba(0,242,255,0.3)', boxShadow: '0 12px 40px rgba(0,242,255,0.08)' }}
+                  transition={{ delay: i * 0.05 }}
+                  whileHover={{ y: -3, borderColor: 'rgba(0,242,255,0.25)' }}
                 >
                   <div className="skill-info">
                     <h4>{skill.name}</h4>
@@ -589,7 +499,7 @@ function App() {
                       initial={{ width: 0 }}
                       whileInView={{ width: `${skill.progress}%` }}
                       viewport={{ once: true }}
-                      transition={{ duration: 1.4, delay: 0.2 + i * 0.05, ease: [0.25, 0.46, 0.45, 0.94] }}
+                      transition={{ duration: 1.2, delay: 0.15 + i * 0.04, ease: [0.25, 0.46, 0.45, 0.94] }}
                     />
                   </div>
                   <div className="skill-percent">{skill.progress}%</div>
@@ -606,52 +516,31 @@ function App() {
           <SectionTitle subtitle="Real-world applications built with modern tech stacks">
             Featured Projects
           </SectionTitle>
-
           <motion.div
             className="projects-grid"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
+            viewport={{ once: true, amount: 0.05 }}
             variants={staggerContainer}
           >
-            {projects.map((p) => (
+            {projects.map(p => (
               <motion.div
                 key={p.id}
                 className={`project-card glass-card project-${p.color}`}
                 variants={scaleIn}
-                whileHover={{
-                  y: -10,
-                  boxShadow: p.color === 'cyan' ? '0 25px 60px rgba(0,242,255,0.15)' :
-                    p.color === 'blue' ? '0 25px 60px rgba(0,102,255,0.15)' :
-                    p.color === 'purple' ? '0 25px 60px rgba(139,92,246,0.15)' :
-                    '0 25px 60px rgba(16,185,129,0.15)',
-                  transition: { duration: 0.3 }
-                }}
+                whileHover={{ y: -8, transition: { duration: 0.25 } }}
               >
                 <div className="project-header">
-                  <motion.span
-                    className="project-icon"
-                    animate={{ rotate: [0, 5, -5, 0] }}
-                    transition={{ duration: 3, repeat: Infinity, delay: p.id * 0.5 }}
-                  >
-                    {p.icon}
-                  </motion.span>
+                  <span className="project-icon">{p.icon}</span>
                   <span className={`project-badge badge-${p.color}`}>{p.badge}</span>
                 </div>
                 <h3>{p.title}</h3>
                 <p className="project-subtitle">{p.subtitle}</p>
                 <p className="project-desc">{p.desc}</p>
                 <div className="tech-tags">
-                  {p.tech.map(t => (
-                    <motion.span key={t} whileHover={{ scale: 1.1 }}>{t}</motion.span>
-                  ))}
+                  {p.tech.map(t => <span key={t}>{t}</span>)}
                 </div>
-                <motion.div
-                  className="btn btn-outline"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  🔒 Private Repository
-                </motion.div>
+                <div className="btn btn-outline">🔒 Private Repository</div>
               </motion.div>
             ))}
           </motion.div>
@@ -664,7 +553,6 @@ function App() {
           <SectionTitle subtitle="Continuous learning and professional development">
             Certifications
           </SectionTitle>
-
           <motion.div
             className="certs-grid"
             initial="hidden"
@@ -677,15 +565,9 @@ function App() {
                 key={i}
                 className={`cert-card glass-card cert-${cert.color}`}
                 variants={fadeInUp}
-                whileHover={{ scale: 1.03, y: -4, transition: { duration: 0.25 } }}
+                whileHover={{ scale: 1.02, y: -3, transition: { duration: 0.2 } }}
               >
-                <motion.div
-                  className="cert-icon"
-                  animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, delay: i * 0.8 }}
-                >
-                  {cert.icon}
-                </motion.div>
+                <div className="cert-icon">{cert.icon}</div>
                 <div className="cert-info">
                   <h4>{cert.title}</h4>
                   <div className="cert-meta">
@@ -704,43 +586,49 @@ function App() {
       <section id="contact" className="contact-section">
         <motion.div
           className="container"
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
           <div className="contact-card glass-card">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              Let's Work Together! 🚀
-            </motion.h2>
-            <motion.p
-              style={{ marginBottom: '2rem', color: '#ccc' }}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
+            <h2>Let's Work Together! 🚀</h2>
+            <p className="contact-sub">
               Seeking internship opportunities in Software Engineering &amp; Backend Development.
-            </motion.p>
+            </p>
+
+            {/* Quick contact chips */}
+            <div className="contact-chips">
+              <a href={`https://wa.me/${personalInfo.whatsapp}`} target="_blank" rel="noopener noreferrer" className="contact-chip chip-wa">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                WhatsApp
+              </a>
+              <a href="mailto:naveendedirisinghe@gmail.com" className="contact-chip chip-email">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                Email Me
+              </a>
+              <a href="https://www.linkedin.com/in/naveen-dilshan-3b6223428/" target="_blank" rel="noopener noreferrer" className="contact-chip chip-li">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                LinkedIn
+              </a>
+            </div>
+
+            <div className="contact-divider"><span>or send a message</span></div>
 
             <form onSubmit={sendEmail} className="contact-form">
               <div className="form-group">
                 <input type="text" name="from_name" placeholder="Your Name" required />
                 <input type="email" name="reply_to" placeholder="Your Email" required />
               </div>
-              <textarea name="message" placeholder="How can I help you?" rows="5" required />
+              <textarea name="message" placeholder="Your message..." rows="5" required />
               <motion.button
                 type="submit"
                 className="btn btn-primary"
-                whileHover={{ scale: 1.04, boxShadow: '0 20px 40px rgba(0,242,255,0.35)' }}
+                disabled={formStatus === 'sending'}
+                whileHover={{ scale: 1.03, boxShadow: '0 18px 38px rgba(0,242,255,0.3)' }}
                 whileTap={{ scale: 0.97 }}
               >
-                Send Message 📨
+                {formStatus === 'sending' ? 'Sending...' : formStatus === 'success' ? '✅ Message Sent!' : formStatus === 'error' ? '❌ Error, Try Again' : 'Send Message 📨'}
               </motion.button>
             </form>
           </div>
@@ -752,75 +640,21 @@ function App() {
         </motion.div>
       </section>
 
-      {/* ── Chatbot ── */}
-      <div className="chatbot-wrapper">
-        <AnimatePresence>
-          {!isBotOpen && (
-            <motion.button
-              className="chat-toggle-btn"
-              onClick={() => setIsBotOpen(true)}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0, opacity: 0 }}
-              whileHover={{ scale: 1.08, boxShadow: '0 15px 40px rgba(0,242,255,0.4)' }}
-              whileTap={{ scale: 0.95 }}
-            >
-              🤖 Ask Navee AI
-            </motion.button>
-          )}
-        </AnimatePresence>
+      {/* ── Floating WhatsApp ── */}
+      <motion.a
+        href={`https://wa.me/${personalInfo.whatsapp}`}
+        target="_blank" rel="noopener noreferrer"
+        className="wa-float"
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 1.5 }}
+        whileHover={{ scale: 1.12 }}
+        whileTap={{ scale: 0.93 }}
+        title="Chat on WhatsApp"
+      >
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </motion.a>
 
-        <AnimatePresence>
-          {isBotOpen && (
-            <motion.div
-              className="chat-window glass-card"
-              initial={{ opacity: 0, scale: 0.85, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.85, y: 20 }}
-              transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-            >
-              <div className="chat-header">
-                <span>Navee AI Assistant</span>
-                <button onClick={() => setIsBotOpen(false)}>×</button>
-              </div>
-              <div className="chat-messages">
-                {messages.map((m, i) => (
-                  <motion.div
-                    key={i}
-                    className={`message ${m.isBot ? 'bot' : 'user'}`}
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {m.text}
-                  </motion.div>
-                ))}
-                {isLoading && (
-                  <motion.div
-                    className="message bot typing"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                  >
-                    <span /><span /><span />
-                  </motion.div>
-                )}
-                <div ref={chatEndRef} />
-              </div>
-              <div className="chat-input-area">
-                <input
-                  value={input}
-                  onChange={e => setInput(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && handleSend()}
-                  placeholder="Ask me anything..."
-                />
-                <motion.button onClick={handleSend} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  ➤
-                </motion.button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
     </div>
   )
 }
