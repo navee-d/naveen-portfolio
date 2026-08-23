@@ -274,7 +274,7 @@ function App() {
       id: 1, title: 'ServiceHubSL', subtitle: 'SaaS Service Marketplace · 2026', icon: '🛒',
       desc: 'A SaaS-based marketplace connecting customers with service providers. Features authentication, service management, booking, user dashboards, and payment functionality.',
       tech: ['React.js', 'Node.js', 'Express.js', 'PostgreSQL', 'Prisma ORM', 'Tailwind CSS'],
-      link: '#', badge: 'SaaS', color: 'cyan', status: null
+      link: 'https://servicehubsl.me/', badge: 'SaaS', color: 'cyan', status: 'live'
     },
     {
       id: 2, title: 'Service Finder Microservice', subtitle: 'Microservices Architecture · 2025', icon: '🔧',
@@ -295,10 +295,10 @@ function App() {
       link: '#', badge: 'Management', color: 'green', status: null
     },
     {
-      id: 5, title: '100 Tables — SaaS', subtitle: 'Multi-tenant SaaS · 2026', icon: '🪑',
-      desc: 'Multi-tenant SaaS platform for restaurant table management. 100+ table configurations, multi-user roles, real-time updates. Currently in testing phase.',
+      id: 5, title: 'Cloud POS System', subtitle: 'SaaS Point of Sale · 2026', icon: '💻',
+      desc: 'Multi-tenant SaaS Point of Sale (POS) system designed for retail and dining. Features inventory tracking, multi-user roles, and real-time transaction updates.',
       tech: ['React.js', 'Node.js', 'PostgreSQL', 'Prisma ORM', 'Docker'],
-      link: '#', badge: 'SaaS', color: 'cyan', status: 'testing'
+      link: '#', badge: 'SaaS POS', color: 'cyan', status: null
     },
     {
       id: 6, title: 'Library Management System', subtitle: 'Backend REST API', icon: '📚',
@@ -635,6 +635,7 @@ function App() {
                         <div className="project-featured-badges">
                           <span className={`project-badge badge-${p.color}`}>{p.badge}</span>
                           {p.status === 'testing' && <span className="badge-testing">🧪 Testing</span>}
+                          {p.status === 'live' && <span className="badge-live">🌐 Live</span>}
                         </div>
                         <h3>{p.title}</h3>
                         <p className="project-subtitle">{p.subtitle}</p>
@@ -642,7 +643,19 @@ function App() {
                     </div>
                     <p className="project-desc">{p.desc}</p>
                     <div className="tech-tags">{p.tech.map(t => <span key={t}>{t}</span>)}</div>
-                    <div className="project-counter">{activeProject + 1} / {projects.length}</div>
+                    
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
+                      {p.link !== '#' ? (
+                        <a href={p.link} target="_blank" rel="noopener noreferrer" className="btn btn-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px' }} onClick={e => e.stopPropagation()}>
+                          <span>🔗</span> Visit Site
+                        </a>
+                      ) : (
+                        <div className="btn btn-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', opacity: 0.7 }}>
+                          <span>🔒</span> Private
+                        </div>
+                      )}
+                      <div className="project-counter">{activeProject + 1} / {projects.length}</div>
+                    </div>
                   </motion.div>
                 ))}
               </AnimatePresence>
@@ -685,13 +698,23 @@ function App() {
                   <span className="project-icon" style={{ fontSize: '1.4rem' }}>{p.icon}</span>
                   <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
                     <span className={`project-badge badge-${p.color}`}>{p.badge}</span>
-                    {p.status === 'testing' && <span className="badge-testing">🧪</span>}
+                    {p.status === 'testing' && <span className="badge-testing" title="Testing">🧪</span>}
+                    {p.status === 'live' && <span className="badge-live" title="Live">🌐</span>}
                   </div>
                 </div>
                 <h3 style={{ fontSize: '0.95rem' }}>{p.title}</h3>
                 <p className="project-subtitle">{p.subtitle}</p>
                 <div className="tech-tags">{p.tech.slice(0, 3).map(t => <span key={t}>{t}</span>)}</div>
-                <div className="btn btn-outline">🔒 Private Repository</div>
+                
+                {p.link !== '#' ? (
+                  <a href={p.link} target="_blank" rel="noopener noreferrer" className="btn btn-outline" style={{ marginTop: 'auto', textAlign: 'center', display: 'block', padding: '6px' }} onClick={e => e.stopPropagation()}>
+                    🔗 Live Site
+                  </a>
+                ) : (
+                  <div className="btn btn-outline" style={{ marginTop: 'auto', textAlign: 'center', padding: '6px', opacity: 0.7 }}>
+                    🔒 Private Code
+                  </div>
+                )}
               </motion.div>
             ))}
           </motion.div>
