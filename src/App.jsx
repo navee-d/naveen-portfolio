@@ -492,7 +492,7 @@ function App() {
               {/* GitHub Stats */}
               <div className="github-stats-wrap">
                 <img
-                  src="https://github-readme-stats.vercel.app/api?username=navee-d&show_icons=true&theme=transparent&hide_border=true&title_color=00f2ff&text_color=a0a0b8&icon_color=0066ff&bg_color=00000000"
+                  src="https://github-readme-stats-eight-theta.vercel.app/api?username=navee-d&show_icons=true&theme=transparent&hide_border=true&title_color=00f2ff&text_color=a0a0b8&icon_color=0066ff&bg_color=00000000"
                   alt="GitHub Stats"
                   className="github-stats-img"
                   loading="lazy"
