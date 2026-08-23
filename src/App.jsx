@@ -108,6 +108,43 @@ function App() {
     whatsapp: "94728121216",
     email: "naveendedirisinghe@gmail.com"
   }
+  const sendEmail = (e) => {
+    e.preventDefault()
+    setFormStatus('sending')
+    const form = e.target
+    const name = form.name.value
+    const email = form.email.value
+    const message = form.message.value
+
+    if (window.Email) {
+      window.Email.send({
+        Host: "smtp.gmail.com",
+        Username: "naveendedirisinghe@gmail.com",
+        Password: "flgq evif qoqk wshp",
+        To: 'naveendedirisinghe@gmail.com',
+        From: "naveendedirisinghe@gmail.com",
+        Subject: `Portfolio Contact from ${name}`,
+        Body: `Name: ${name}<br>Email: ${email}<br>Message: ${message}`
+      }).then(
+        msg => {
+          if (msg === "OK") {
+            setFormStatus('success')
+            form.reset()
+            setTimeout(() => setFormStatus(null), 3000)
+          } else {
+            setFormStatus('error')
+            setTimeout(() => setFormStatus(null), 3000)
+          }
+        }
+      ).catch(() => {
+        setFormStatus('error')
+        setTimeout(() => setFormStatus(null), 3000)
+      })
+    } else {
+      setFormStatus('error')
+      setTimeout(() => setFormStatus(null), 3000)
+    }
+  }
 
   // ─── Services Data ───────────────────────────────────────────────────────
   const services = [
@@ -298,7 +335,7 @@ function App() {
       id: 5, title: 'Cloud POS System', subtitle: 'SaaS Point of Sale · 2026', icon: '💻',
       desc: 'Multi-tenant SaaS Point of Sale (POS) system designed for retail and dining. Features inventory tracking, multi-user roles, and real-time transaction updates.',
       tech: ['React.js', 'Node.js', 'PostgreSQL', 'Prisma ORM', 'Docker'],
-      link: '#', badge: 'SaaS POS', color: 'cyan', status: null
+      link: '#', badge: 'SaaS POS', color: 'cyan', status: 'testing'
     },
     {
       id: 6, title: 'Library Management System', subtitle: 'Backend REST API', icon: '📚',
@@ -322,19 +359,7 @@ function App() {
     { title: 'Computer Networks Fundamentals', issuer: 'Udemy', year: '2026', icon: '🌐', color: 'green' }
   ]
 
-  const sendEmail = async (e) => {
-    e.preventDefault()
-    setFormStatus('sending')
-    try {
-      await emailjs.sendForm('service_qzdj9h6', 'template_dzxe7i9', e.target, 'Z8EWbyIIbI1e9gu-P')
-      setFormStatus('success')
-      e.target.reset()
-      setTimeout(() => setFormStatus(null), 4000)
-    } catch {
-      setFormStatus('error')
-      setTimeout(() => setFormStatus(null), 4000)
-    }
-  }
+
 
   const allSkills = skillCategories.flatMap(c => c.skills)
   const displaySkills = activeTab === 'all' ? allSkills : skillCategories.find(c => c.category === activeTab)?.skills || []
@@ -492,7 +517,7 @@ function App() {
               {/* GitHub Stats */}
               <div className="github-stats-wrap">
                 <img
-                  src="https://github-readme-stats-eight-theta.vercel.app/api/top-langs/?username=navee-d&layout=compact&theme=transparent&hide_border=true&title_color=00f2ff&text_color=a0a0b8&icon_color=0066ff"
+                  src="https://github-readme-stats-eight-theta.vercel.app/api/top-langs/?username=navee-d&layout=compact&theme=dark&bg_color=00000000&hide_border=true&title_color=00f2ff&text_color=a0a0b8&icon_color=0066ff"
                   alt="Top Languages"
                   className="github-stats-img"
                   loading="lazy"
@@ -769,19 +794,14 @@ function App() {
               </a>
             </div>
             <div className="contact-divider"><span>or send a message</span></div>
-            <form action="https://formsubmit.co/naveendedirisinghe@gmail.com" method="POST" className="contact-form">
-              {/* FormSubmit config */}
-              <input type="hidden" name="_subject" value="New Contact from Portfolio!" />
-              <input type="hidden" name="_captcha" value="false" />
-              <input type="hidden" name="_next" value="https://navee.me/" />
-              
+            <form onSubmit={sendEmail} className="contact-form">
               <div className="form-group">
                 <input type="text" name="name" placeholder="Your Name" required />
                 <input type="email" name="email" placeholder="Your Email" required />
               </div>
               <textarea name="message" placeholder="Your message..." rows="5" required />
-              <motion.button type="submit" className="btn btn-primary" whileHover={{ scale: 1.03, boxShadow: '0 18px 38px rgba(0,242,255,0.3)' }} whileTap={{ scale: 0.97 }}>
-                Send Message 📨
+              <motion.button type="submit" className="btn btn-primary" disabled={formStatus === 'sending'} whileHover={{ scale: 1.03, boxShadow: '0 18px 38px rgba(0,242,255,0.3)' }} whileTap={{ scale: 0.97 }}>
+                {formStatus === 'sending' ? 'Sending...' : formStatus === 'success' ? '✅ Message Sent!' : formStatus === 'error' ? '❌ Error, Try Again' : 'Send Message 📨'}
               </motion.button>
             </form>
           </div>
