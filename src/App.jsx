@@ -492,8 +492,8 @@ function App() {
               {/* GitHub Stats */}
               <div className="github-stats-wrap">
                 <img
-                  src="https://github-readme-stats-eight-theta.vercel.app/api?username=navee-d&show_icons=true&theme=transparent&hide_border=true&title_color=00f2ff&text_color=a0a0b8&icon_color=0066ff&bg_color=00000000"
-                  alt="GitHub Stats"
+                  src="https://github-readme-stats-eight-theta.vercel.app/api/top-langs/?username=navee-d&layout=compact&theme=transparent&hide_border=true&title_color=00f2ff&text_color=a0a0b8&icon_color=0066ff"
+                  alt="Top Languages"
                   className="github-stats-img"
                   loading="lazy"
                 />
@@ -769,14 +769,19 @@ function App() {
               </a>
             </div>
             <div className="contact-divider"><span>or send a message</span></div>
-            <form onSubmit={sendEmail} className="contact-form">
+            <form action="https://formsubmit.co/naveendedirisinghe@gmail.com" method="POST" className="contact-form">
+              {/* FormSubmit config */}
+              <input type="hidden" name="_subject" value="New Contact from Portfolio!" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_next" value="https://navee.me/" />
+              
               <div className="form-group">
-                <input type="text" name="from_name" placeholder="Your Name" required />
-                <input type="email" name="reply_to" placeholder="Your Email" required />
+                <input type="text" name="name" placeholder="Your Name" required />
+                <input type="email" name="email" placeholder="Your Email" required />
               </div>
               <textarea name="message" placeholder="Your message..." rows="5" required />
-              <motion.button type="submit" className="btn btn-primary" disabled={formStatus === 'sending'} whileHover={{ scale: 1.03, boxShadow: '0 18px 38px rgba(0,242,255,0.3)' }} whileTap={{ scale: 0.97 }}>
-                {formStatus === 'sending' ? 'Sending...' : formStatus === 'success' ? '✅ Message Sent!' : formStatus === 'error' ? '❌ Error, Try Again' : 'Send Message 📨'}
+              <motion.button type="submit" className="btn btn-primary" whileHover={{ scale: 1.03, boxShadow: '0 18px 38px rgba(0,242,255,0.3)' }} whileTap={{ scale: 0.97 }}>
+                Send Message 📨
               </motion.button>
             </form>
           </div>
