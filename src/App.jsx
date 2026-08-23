@@ -274,7 +274,7 @@ function App() {
       id: 1, title: 'ServiceHubSL', subtitle: 'SaaS Service Marketplace · 2026', icon: '🛒',
       desc: 'A SaaS-based marketplace connecting customers with service providers. Features authentication, service management, booking, user dashboards, and payment functionality.',
       tech: ['React.js', 'Node.js', 'Express.js', 'PostgreSQL', 'Prisma ORM', 'Tailwind CSS'],
-      link: 'https://servicehubsl.me/', badge: 'SaaS', color: 'cyan', status: 'live'
+      link: 'https://servicehubsl.me/', badge: 'SaaS', color: 'cyan', status: 'live', pinned: true
     },
     {
       id: 2, title: 'Service Finder Microservice', subtitle: 'Microservices Architecture · 2025', icon: '🔧',
@@ -636,6 +636,7 @@ function App() {
                       <div className="project-featured-icon">{p.icon}</div>
                       <div>
                         <div className="project-featured-badges">
+                          {p.pinned && <span className="badge-pinned">📌 Pinned</span>}
                           <span className={`project-badge badge-${p.color}`}>{p.badge}</span>
                           {p.status === 'testing' && <span className="badge-testing">🧪 Testing</span>}
                           {p.status === 'live' && <span className="badge-live">🌐 Live</span>}
@@ -700,6 +701,7 @@ function App() {
                 <div className="project-header">
                   <span className="project-icon" style={{ fontSize: '1.4rem' }}>{p.icon}</span>
                   <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                    {p.pinned && <span className="badge-pinned" title="Pinned">📌</span>}
                     <span className={`project-badge badge-${p.color}`}>{p.badge}</span>
                     {p.status === 'testing' && <span className="badge-testing" title="Testing">🧪</span>}
                     {p.status === 'live' && <span className="badge-live" title="Live">🌐</span>}

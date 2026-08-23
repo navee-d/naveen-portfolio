@@ -750,6 +750,15 @@ a { text-decoration: none; color: inherit; }
   color: #10b981;
   border: 1px solid rgba(16,185,129,0.3);
 }
+.badge-pinned {
+  padding: 3px 10px;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: rgba(236,72,153,0.1);
+  color: #ec4899;
+  border: 1px solid rgba(236,72,153,0.3);
+}
 .project-counter {
   font-size: 0.78rem;
   color: var(--text-secondary);
