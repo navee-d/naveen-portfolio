@@ -420,18 +420,21 @@ function App() {
 
           {/* Right — Profile (FIXED: ring spins, image stays still) */}
           <motion.div className="hero-image-container" variants={fadeInRight}>
-            <div className="profile-ring-outer">
-              <div className="profile-ring-counter">
-                <motion.div
-                  className="profile-img-wrapper"
-                  animate={{ y: [0, -14, 0] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                  whileHover={{ scale: 1.03 }}
-                >
-                  <img src={profilePic} alt="Naveen Dilshan" className="profile-img" />
-                </motion.div>
+            <motion.div
+              animate={{ y: [0, -14, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <div className="profile-ring-outer">
+                <div className="profile-ring-counter">
+                  <motion.div
+                    className="profile-img-wrapper"
+                    whileHover={{ scale: 1.03 }}
+                  >
+                    <img src={profilePic} alt="Naveen Dilshan" className="profile-img" />
+                  </motion.div>
+                </div>
               </div>
-            </div>
+            </motion.div>
 
             <motion.div className="hero-social-links" initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }}>
               <motion.a href="https://github.com/navee-d" target="_blank" rel="noopener noreferrer" className="social-chip" whileHover={{ scale: 1.06, y: -2 }}>
